@@ -1,22 +1,8 @@
-# Maven
-target
-
-# Gradle
-.gradle
-build
-
-# IDEA
-.idea
-*.iml
-*.ipr
-*.iws
-out
-
-# Eclipse
-.project
-.classpath
-.settings
-bin
-
-# Grails
+web-app/WEB-INF/tld
+plugin.xml
 stacktrace.log
+target
+.DS_Store
+*.zip
+docs
+plugins

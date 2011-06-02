@@ -1,8 +1,0 @@
-include 'spock-core'
-include 'spock-guice'
-include 'spock-specs'
-include 'spock-spring'
-include 'spock-tapestry'
-include 'spock-unitils'
-
-
