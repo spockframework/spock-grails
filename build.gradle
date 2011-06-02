@@ -1,76 +1,34 @@
-description = "Spock Framework"
+apply from: profile("publishMaven")
 
-libs = [
-  ant: "org.apache.ant:ant:1.8.1", // use same version as Groovy 1.8
-  asm: "asm:asm:3.2", // use same version as Groovy 1.8
-  cglib: "cglib:cglib-nodep:2.2",
-  easymock: "org.easymock:easymock:3.0",
-  groovy: "org.codehaus.groovy:groovy-all:1.8.0",
-  h2database: "com.h2database:h2:1.2.147",
-  hamcrest_core: "org.hamcrest:hamcrest-core:1.2",
-  jmock: "org.jmock:jmock:2.5.1",
-  jmock_junit4: "org.jmock:jmock-junit4:2.5.1",
-  junit: "junit:junit-dep:4.8.2",
-  log4j: "log4j:log4j:1.2.16",
-  mockito: "org.mockito:mockito-all:1.8.5",
-  objenesis: "org.objenesis:objenesis:1.2"
-]
+description = "Spock Framework - Grails Plugin Support"
+grailsVersion = "1.4.0.M1"
 
-allprojects {
-  group = "org.spockframework"
-  version = "0.6-groovy-1.8-SNAPSHOT"
-
-  apply plugin: "idea"
-  apply plugin: "eclipse"
-  apply plugin: "groovy"
-  apply from: profile("common")
-
-  sourceCompatibility = 1.5
-  targetCompatibility = 1.5
-
-  configurations {
-    all*.exclude module: "junit" // we use junit-dep instead
-  }
-
-  dependencies {
-    groovy libs.groovy
-  }
-
-  repositories {
-    mavenCentral()
-    if (isSnapshotVersion) {
-      mavenRepo(urls: "http://snapshots.repository.codehaus.org")
-    }
-  }
-
-  compileGroovy.options.fork = false
-  compileTestGroovy.options.fork = false
-
-  javadoc {
-    include "spock/**"
-    configure(options) {
-      links "http://java.sun.com/j2se/1.5.0/docs/api"
-      links "http://groovy.codehaus.org/gapi"
-      links "http://kentbeck.github.com/junit/javadoc/4.8"
-      links "http://www.jarvana.com/jarvana/inspect/org/hamcrest/hamcrest-core/1.2/hamcrest-core-1.2-javadoc.jar"
-    }
-  }
-
-  task sourcesJar(type: Jar) {
-    classifier = "sources"
-    from sourceSets.main.allSource
-  }
-
-  task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = "javadoc"
-    from javadoc.destinationDir
-  }
+repositories {
+  mavenRepo name: "Grails Repo", urls: "http://repo.grails.org/grails/libs-releases-local"
 }
 
-File profile(String name) {
-  project.file("gradle/${name}.gradle")
+dependencies {
+  compile project(":spock-core")
+  
+  ["core", "bootstrap", "web", "test", "plugin-testing", "plugin-converters"].each { module ->
+    compile("org.grails:grails-$module:$grailsVersion") {
+      transitive = false
+    }
+  }
+  
+  ["core", "context", "context-support", "beans", "webmvc", "web"].each { module ->
+    compile("org.springframework:spring-$module:3.0.5.RELEASE") {
+      transitive = false
+    }
+  }
+  
+  compile("org.apache.ant:ant-junit:1.8.2") {
+    transitive = false
+  }
+  
+  compile("javax.servlet:servlet-api:2.5")
 }
 
-task wrapper(type: Wrapper) {
-  gradleVersion = "1.0-milestone-3"
+modifyPom {
+  it.dependencies.findAll { it.groupId != "org.spockframework" }*.scope = "provided"
 }
