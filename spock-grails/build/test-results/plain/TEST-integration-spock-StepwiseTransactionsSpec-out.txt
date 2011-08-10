@@ -1,2 +1,0 @@
---Output from insert a person--
---Output from person should still be there because its the same transaction--

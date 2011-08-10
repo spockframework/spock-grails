@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="hasdrubal.local" name="GoodTests" tests="1" time="0.029" timestamp="2011-08-10T03:10:15">
-  <properties />
-  <testcase classname="GoodTests" name="testIt" time="0.018" />
-  <system-out><![CDATA[--Output from testIt--
-]]></system-out>
-  <system-err><![CDATA[--Output from testIt--
-]]></system-err>
-</testsuite>

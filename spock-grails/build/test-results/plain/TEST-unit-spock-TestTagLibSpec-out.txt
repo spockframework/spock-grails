@@ -1,3 +1,0 @@
---Output from bar tag--
---Output from bar tag subsequent call--
---Output from body tag--
