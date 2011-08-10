@@ -6,3 +6,5 @@ target
 *.zip
 docs
 plugins
+application.properties
+SpockGrailsPlugin.groovy
