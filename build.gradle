@@ -1,0 +1,21 @@
+description = "Spock Framework support for Grails"
+
+allprojects { project ->
+  version = '0.6-SNAPSHOT'
+  group = "org.spockframework"
+  isSnapshot = version.endsWith("-SNAPSHOT")
+
+  spockVersion = "0.6-groovy-1.8-SNAPSHOT"
+  spockDependency = "org.spockframework:spock-core:$spockVersion"
+
+  grailsVersion = "2.0.0.M1"
+
+  repositories {
+    mavenRepo name: "Grails Repo", urls: "http://repo.grails.org/grails/core"
+    mavenRepo name: "Spock Snapshots", urls: "http://m2repo.spockframework.org/snapshots"
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = "1.0-milestone-4"
+}

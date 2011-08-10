@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="hasdrubal.local" name="TestIntegrationSpec" tests="2" time="0.039" timestamp="2011-08-10T03:10:21">
+  <properties />
+  <testcase classname="TestIntegrationSpec" name="injected simpleService is present" time="0.0060" />
+  <testcase classname="TestIntegrationSpec" name="can write to database" time="0.022" />
+  <system-out><![CDATA[--Output from injected simpleService is present--
+--Output from can write to database--
+]]></system-out>
+  <system-err><![CDATA[--Output from injected simpleService is present--
+--Output from can write to database--
+]]></system-err>
+</testsuite>

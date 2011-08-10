@@ -1,0 +1,13 @@
+Testsuite: TestIntegrationSpec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.039 sec
+------------- Standard Output ---------------
+--Output from injected simpleService is present--
+--Output from can write to database--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from injected simpleService is present--
+--Output from can write to database--
+------------- ---------------- ---------------
+
+Testcase: injected simpleService is present took 0.006 sec
+Testcase: can write to database took 0.022 sec

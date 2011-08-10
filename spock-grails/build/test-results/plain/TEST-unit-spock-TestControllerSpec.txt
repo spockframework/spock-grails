@@ -1,0 +1,19 @@
+Testsuite: TestControllerSpec
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.341 sec
+------------- Standard Output ---------------
+--Output from text action--
+--Output from some redirect action--
+--Output from bodyElementText action--
+--Output from model action--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from text action--
+--Output from some redirect action--
+--Output from bodyElementText action--
+--Output from model action--
+------------- ---------------- ---------------
+
+Testcase: text action took 0.241 sec
+Testcase: some redirect action took 0.006 sec
+Testcase: bodyElementText action took 0.088 sec
+Testcase: model action took 0.005 sec

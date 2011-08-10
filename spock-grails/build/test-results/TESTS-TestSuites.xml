@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="0" name="FormatBooleanTagSpec" package="" tests="1" time="0.346" timestamp="2011-08-10T03:10:21">
+      <properties />
+
+      <testcase classname="FormatBooleanTagSpec" name="simple format boolean usage" time="0.345" />
+
+      <system-out><![CDATA[--Output from simple format boolean usage--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from simple format boolean usage--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="1" name="NonStepwiseTransactionsSpec" package="" tests="2" time="0.141" timestamp="2011-08-10T03:10:21">
+      <properties />
+
+      <testcase classname="NonStepwiseTransactionsSpec" name="insert a person" time="0.126" />
+
+      <testcase classname="NonStepwiseTransactionsSpec" name="person should not be there because its a different transaction" time="0.0040" />
+
+      <system-out><![CDATA[--Output from insert a person--
+--Output from person should not be there because its a different transaction--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from insert a person--
+--Output from person should not be there because its a different transaction--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="2" name="StepwiseTransactionsSpec" package="" tests="2" time="0.157" timestamp="2011-08-10T03:10:21">
+      <properties />
+
+      <testcase classname="StepwiseTransactionsSpec" name="insert a person" time="0.0060" />
+
+      <testcase classname="StepwiseTransactionsSpec" name="person should still be there because its the same transaction" time="0.0030" />
+
+      <system-out><![CDATA[--Output from insert a person--
+--Output from person should still be there because its the same transaction--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from insert a person--
+--Output from person should still be there because its the same transaction--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="3" name="TestIntegrationSpec" package="" tests="2" time="0.039" timestamp="2011-08-10T03:10:21">
+      <properties />
+
+      <testcase classname="TestIntegrationSpec" name="injected simpleService is present" time="0.0060" />
+
+      <testcase classname="TestIntegrationSpec" name="can write to database" time="0.022" />
+
+      <system-out><![CDATA[--Output from injected simpleService is present--
+--Output from can write to database--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from injected simpleService is present--
+--Output from can write to database--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="4" name="GoodSpec" package="" tests="1" time="0.035" timestamp="2011-08-10T03:10:15">
+      <properties />
+
+      <testcase classname="GoodSpec" name="can you figure out what I&apos;m up to?" time="0.016" />
+
+      <system-out><![CDATA[--Output from can you figure out what I'm up to?--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from can you figure out what I'm up to?--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="5" name="TestControllerSpec" package="" tests="4" time="0.341" timestamp="2011-08-10T03:10:15">
+      <properties />
+
+      <testcase classname="TestControllerSpec" name="text action" time="0.241" />
+
+      <testcase classname="TestControllerSpec" name="some redirect action" time="0.0050" />
+
+      <testcase classname="TestControllerSpec" name="bodyElementText action" time="0.087" />
+
+      <testcase classname="TestControllerSpec" name="model action" time="0.0050" />
+
+      <system-out><![CDATA[--Output from text action--
+--Output from some redirect action--
+--Output from bodyElementText action--
+--Output from model action--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from text action--
+--Output from some redirect action--
+--Output from bodyElementText action--
+--Output from model action--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="6" name="TestTagLibSpec" package="" tests="3" time="0.052" timestamp="2011-08-10T03:10:16">
+      <properties />
+
+      <testcase classname="TestTagLibSpec" name="bar tag" time="0.028" />
+
+      <testcase classname="TestTagLibSpec" name="bar tag subsequent call" time="0.011" />
+
+      <testcase classname="TestTagLibSpec" name="body tag" time="0.012" />
+
+      <system-out><![CDATA[--Output from bar tag--
+--Output from bar tag subsequent call--
+--Output from body tag--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from bar tag--
+--Output from bar tag subsequent call--
+--Output from body tag--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="7" name="UnitSpecSpec" package="" tests="2" time="0.237" timestamp="2011-08-10T03:10:15">
+      <properties />
+
+      <testcase classname="UnitSpecSpec" name="domain mocking" time="0.215" />
+
+      <testcase classname="UnitSpecSpec" name="constraints mocking" time="0.019" />
+
+      <system-out><![CDATA[--Output from domain mocking--
+--Output from constraints mocking--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from domain mocking--
+--Output from constraints mocking--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="hasdrubal.local" id="8" name="GoodTests" package="" tests="1" time="0.029" timestamp="2011-08-10T03:10:15">
+      <properties />
+
+      <testcase classname="GoodTests" name="testIt" time="0.018" />
+
+      <system-out><![CDATA[--Output from testIt--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testIt--
+]]></system-err>
+
+  </testsuite>
+</testsuites>

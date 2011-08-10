@@ -1,0 +1,10 @@
+Testsuite: GoodSpec
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.035 sec
+------------- Standard Output ---------------
+--Output from can you figure out what I'm up to?--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from can you figure out what I'm up to?--
+------------- ---------------- ---------------
+
+Testcase: can you figure out what I'm up to? took 0.016 sec

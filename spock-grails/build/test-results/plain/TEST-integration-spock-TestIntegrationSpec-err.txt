@@ -1,0 +1,2 @@
+--Output from injected simpleService is present--
+--Output from can write to database--

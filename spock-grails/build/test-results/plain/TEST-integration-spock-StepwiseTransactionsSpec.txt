@@ -1,0 +1,13 @@
+Testsuite: StepwiseTransactionsSpec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.157 sec
+------------- Standard Output ---------------
+--Output from insert a person--
+--Output from person should still be there because its the same transaction--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from insert a person--
+--Output from person should still be there because its the same transaction--
+------------- ---------------- ---------------
+
+Testcase: insert a person took 0.006 sec
+Testcase: person should still be there because its the same transaction took 0.003 sec

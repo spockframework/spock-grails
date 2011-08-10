@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="hasdrubal.local" name="UnitSpecSpec" tests="2" time="0.237" timestamp="2011-08-10T03:10:15">
+  <properties />
+  <testcase classname="UnitSpecSpec" name="domain mocking" time="0.215" />
+  <testcase classname="UnitSpecSpec" name="constraints mocking" time="0.019" />
+  <system-out><![CDATA[--Output from domain mocking--
+--Output from constraints mocking--
+]]></system-out>
+  <system-err><![CDATA[--Output from domain mocking--
+--Output from constraints mocking--
+]]></system-err>
+</testsuite>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="hasdrubal.local" name="FormatBooleanTagSpec" tests="1" time="0.346" timestamp="2011-08-10T03:10:21">
+  <properties />
+  <testcase classname="FormatBooleanTagSpec" name="simple format boolean usage" time="0.345" />
+  <system-out><![CDATA[--Output from simple format boolean usage--
+]]></system-out>
+  <system-err><![CDATA[--Output from simple format boolean usage--
+]]></system-err>
+</testsuite>

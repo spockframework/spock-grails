@@ -1,0 +1,10 @@
+Testsuite: GoodTests
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.029 sec
+------------- Standard Output ---------------
+--Output from testIt--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testIt--
+------------- ---------------- ---------------
+
+Testcase: testIt took 0.018 sec

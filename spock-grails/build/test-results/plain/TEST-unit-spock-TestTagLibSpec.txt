@@ -1,0 +1,16 @@
+Testsuite: TestTagLibSpec
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.052 sec
+------------- Standard Output ---------------
+--Output from bar tag--
+--Output from bar tag subsequent call--
+--Output from body tag--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from bar tag--
+--Output from bar tag subsequent call--
+--Output from body tag--
+------------- ---------------- ---------------
+
+Testcase: bar tag took 0.028 sec
+Testcase: bar tag subsequent call took 0.011 sec
+Testcase: body tag took 0.012 sec

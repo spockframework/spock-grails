@@ -1,0 +1,13 @@
+Testsuite: UnitSpecSpec
+Tests run: 2, Failures: 0, Errors: 0, Time elapsed: 0.237 sec
+------------- Standard Output ---------------
+--Output from domain mocking--
+--Output from constraints mocking--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from domain mocking--
+--Output from constraints mocking--
+------------- ---------------- ---------------
+
+Testcase: domain mocking took 0.215 sec
+Testcase: constraints mocking took 0.019 sec

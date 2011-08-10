@@ -29,7 +29,7 @@ grails.project.dependency.resolution = {
   if (isSnapshot) effectiveSpockVersion += "-SNAPSHOT"
 
   def isSpockBuild = System.getProperty("spock.building") != null
-  def isGrails14 = grailsVersion.startsWith("1.4")
+  def isGrails2 = grailsVersion.startsWith("2")
   
   inherits "global" // inherit Grails' default dependencies
   log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
@@ -57,7 +57,7 @@ grails.project.dependency.resolution = {
   }
   
   plugins {
-    test(":hibernate:$grailsVersion") {
+    compile(":hibernate:$grailsVersion") {
       export = false
     }
     build(":release:1.0.0.M2") {
