@@ -58,12 +58,10 @@ System.setProperty("spock.building", "true")
 System.setProperty("grails.full.stacktrace", "true")
 
 task uploadArchives(type: GrailsTask, dependsOn: "assemble") {
-  if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
-    command "publish-plugin"
-    configuration "compile"
-    useRuntimeClasspathForBootstrap true
-    
-    args "--noScm"
-    if (project.version.endsWith("-SNAPSHOT")) args += " -snapshot"    
-  }
+  command "publish-plugin"
+  configuration "compile"
+  useRuntimeClasspathForBootstrap true
+  
+  args "--noScm"
+  if (project.version.endsWith("-SNAPSHOT")) args += " -snapshot"    
 }
