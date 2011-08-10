@@ -27,5 +27,5 @@ dependencies {
 }
 
 modifyPom {
-  it.dependencies.findAll { it.groupId != "org.spockframework" }*.scope = "provided"
+  it.dependencies.removeAll(it.dependencies.findAll { it.groupId != "org.spockframework" })
 }
