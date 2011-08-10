@@ -2,6 +2,7 @@ apply plugin: "groovy"
 apply from: rootProject.file("gradle/publishMaven.gradle")
 
 description = "Spock Framework - Grails Plugin Support"
+version = spockVersion
 
 dependencies {
   groovy groovyDependency

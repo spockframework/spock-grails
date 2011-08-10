@@ -10,6 +10,8 @@ buildscript {
   }
 }
 
+evaluationDependsOn ":spock-grails-support"
+
 apply plugin: "grails"
 
 grailsHome = file("grails-home").absolutePath
@@ -69,6 +71,7 @@ def findTemplatedFiles = {
 task createTemplatedFiles << {
   def templateVariables = [
     "grails-version": project.grailsVersion,
+    "spock-version": project.spockVersion,
     "plugin-version": project.version
   ]
   
@@ -107,11 +110,19 @@ task clean(type: Delete, overwrite: true) { task ->
   }
 }
 
-task uploadArchives(type: GrailsTask, dependsOn: "assemble") {
+task uploadArchives(type: GrailsTask, dependsOn: ["assemble", project(":spock-grails-support").install]) {
   command "publish-plugin"
   configuration "compile"
   useRuntimeClasspathForBootstrap true
   
   args "--noScm"
-  if (project.version.endsWith("-SNAPSHOT")) args += " -snapshot"    
+  if (project.version.endsWith("-SNAPSHOT")) args += " -snapshot"
+  
+  doFirst {
+    System.setProperty("spock.releasing", "true")
+  }
+  
+  doLast {
+    System.clearProperty("spock.releasing")
+  }
 }

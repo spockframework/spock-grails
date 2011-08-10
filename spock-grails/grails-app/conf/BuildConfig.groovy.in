@@ -20,15 +20,12 @@ grails.project.test.reports.dir = "target/test-reports"
 
 grails.project.dependency.resolution = {
 
-  // NOTE - needs to kept in sync with version in Gradle build
-  def spockVersion = "0.6"
-  def groovyVersion = "1.8"
-  def isSnapshot = true
-
-  def effectiveSpockVersion = "${spockVersion}-groovy-${groovyVersion}"
-  if (isSnapshot) effectiveSpockVersion += "-SNAPSHOT"
-
+  def spockVersion = "@spock-version@"
+  def isSnapshot = spockVersion.endsWith("-SNAPSHOT")
+  
   def isSpockBuild = System.getProperty("spock.building") != null
+  def isSpockRelease = System.getProperty("spock.releasing") != null
+  def isSpockManagedByGradleBuild = isSpockBuild && !isSpockRelease
 
   inherits "global" // inherit Grails' default dependencies
   log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
@@ -37,14 +34,17 @@ grails.project.dependency.resolution = {
     grailsHome()
     grailsCentral()
     mavenCentral()
+    if (!isSpockManagedByGradleBuild) {
+      mavenLocal()
+    }
     if (isSnapshot) {
       mavenRepo "http://m2repo.spockframework.org/snapshots"
     }
   }
 
   dependencies {
-    if (!isSpockBuild) {
-      test("org.spockframework:spock-grails-support:${effectiveSpockVersion}")
+    if (!isSpockManagedByGradleBuild) {
+      compile("org.spockframework:spock-grails-support:${spockVersion}")
     }
 
     test("hsqldb:hsqldb:1.8.0.7") {
