@@ -45,6 +45,7 @@ install {
 
 uploadArchives {
   project.poms << repositories.mavenDeployer {
+    uniqueVersion = false
     pom basePom
     if (isSnapshot) {
       snapshotRepository(url: "file:///var/www/m2repo/snapshots")
