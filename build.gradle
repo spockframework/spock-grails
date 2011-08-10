@@ -9,6 +9,9 @@ allprojects { project ->
   spockDependency = "org.spockframework:spock-core:$spockVersion"
 
   grailsVersion = "2.0.0.M1"
+  
+  groovyVersion = "1.8.1"
+  groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 
   repositories {
     mavenRepo name: "Grails Repo", urls: "http://repo.grails.org/grails/core"
