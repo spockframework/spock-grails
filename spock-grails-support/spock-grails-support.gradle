@@ -1,4 +1,5 @@
 apply plugin: "java"
+apply from: rootProject.file("gradle/publishMaven.gradle")
 
 description = "Spock Framework - Grails Plugin Support"
 
@@ -24,6 +25,6 @@ dependencies {
   compile("javax.servlet:servlet-api:2.5")
 }
 
-/*modifyPom {
+modifyPom {
   it.dependencies.findAll { it.groupId != "org.spockframework" }*.scope = "provided"
-}*/
+}

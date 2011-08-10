@@ -25,6 +25,10 @@ configurations {
   compile.exclude group: "org.slf4j"
 }
 
+configurations {
+  upload
+}
+
 dependencies {
   logging "commons-logging:commons-logging:1.1.1", "org.slf4j:jcl-over-slf4j:1.6.1"
   
@@ -36,31 +40,30 @@ dependencies {
   def grailsPlugins = { String[] plugins -> plugins.collect { "org.grails:grails-plugin-$it:$grailsVersion" } }
   test grailsPlugins("tomcat", "i18n", "datasource", "services")
   test("org.grails:grails-hibernate:$grailsVersion")
+  
+  // Needed by release plugin
+  compile "org.apache.maven:maven-ant-tasks:2.1.0",
+          "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0"
+          
+  compile "org.tmatesoft.svnkit:svnkit:1.3.5", {
+    exclude module: "jna"
+    exclude module: "trilead-ssh2"
+    exclude module: "sqljet"
+  }
+  
 }
 
 // Used in BuildConfig to selectively list specify dependencies 
 System.setProperty("spock.building", "true") 
+System.setProperty("grails.full.stacktrace", "true")
 
-task uploadArchives(type: GrailsTask) {
+task uploadArchives(type: GrailsTask, dependsOn: "assemble") {
   if (project.hasProperty('codehausUsername') && project.hasProperty('codehausPassword')) {
     command "publish-plugin"
     configuration "compile"
     useRuntimeClasspathForBootstrap true
     
     args "--noScm"
-    if (project.version.endsWith("-SNAPSHOT")) args += " -snapshot"
-    
-    doFirst {
-      project.dependencies {
-        compile "org.apache.maven:maven-ant-tasks:2.1.0",
-                "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0"
-                
-        compile "org.tmatesoft.svnkit:svnkit:1.3.5", {
-          exclude module: "jna"
-          exclude module: "trilead-ssh2"
-          exclude module: "sqljet"
-        }
-      }
-    }
+    if (project.version.endsWith("-SNAPSHOT")) args += " -snapshot"    
   }
 }

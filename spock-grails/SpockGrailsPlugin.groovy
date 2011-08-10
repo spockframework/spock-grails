@@ -17,7 +17,7 @@
 class SpockGrailsPlugin {
   
   // Needs to be kept in sync with Spock version.
-  def version = "0.6-groovy-1.8-SNAPSHOT"
+  def version = "0.6-SNAPSHOT"
   
   def grailsVersion = "1.3.0 > *"
   def dependsOn = [:]

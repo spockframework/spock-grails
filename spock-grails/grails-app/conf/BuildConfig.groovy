@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-grails.project.class.dir = "target/classes"
+grails.project.work.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 
 grails.project.dependency.resolution = {
-  
+
   // NOTE - needs to kept in sync with version in Gradle build
   def spockVersion = "0.6"
   def groovyVersion = "1.8"
   def isSnapshot = true
-  
+
   def effectiveSpockVersion = "${spockVersion}-groovy-${groovyVersion}"
   if (isSnapshot) effectiveSpockVersion += "-SNAPSHOT"
 
   def isSpockBuild = System.getProperty("spock.building") != null
-  def isGrails2 = grailsVersion.startsWith("2")
-  
+
   inherits "global" // inherit Grails' default dependencies
   log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
 
@@ -39,28 +38,25 @@ grails.project.dependency.resolution = {
     grailsCentral()
     mavenCentral()
     if (isSnapshot) {
-      mavenLocal()
       mavenRepo "http://m2repo.spockframework.org/snapshots"
     }
   }
-  
+
   dependencies {
-    test("org.spockframework:spock-grails-support:${effectiveSpockVersion}") {
-      transitive = false
+    if (!isSpockBuild) {
+      test("org.spockframework:spock-grails-support:${effectiveSpockVersion}")
     }
-    test("org.spockframework:spock-core:${effectiveSpockVersion}") {
-      excludes "groovy-all"
-    }
+
     test("hsqldb:hsqldb:1.8.0.7") {
       export = false
     }
   }
-  
+
   plugins {
     compile(":hibernate:$grailsVersion") {
       export = false
     }
-    build(":release:1.0.0.M2") {
+    compile(":release:1.0.0.RC3") {
       export = false
     }
     runtime(":svn:1.0.0.M1") {
