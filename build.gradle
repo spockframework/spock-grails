@@ -14,14 +14,14 @@ allprojects { project ->
   groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 
   repositories {
-    mavenRepo(name: "Grails Repo", urls: "http://repo.grails.org/grails/core") {
-      if (project.hasProperty('snapshotTimeout')) {
-          setSnapshotTimeout(Long.parseLong(project.snapshotTimeout))
-      }
-    }
     mavenRepo(name: "Spock Snapshots", urls: "http://m2repo.spockframework.org/snapshots") {
       if (project.hasProperty('snapshotTimeout')) {
           println "setting snapshot timeou"
+          setSnapshotTimeout(Long.parseLong(project.snapshotTimeout))
+      }
+    }
+    mavenRepo(name: "Grails Repo", urls: "http://repo.grails.org/grails/core") {
+      if (project.hasProperty('snapshotTimeout')) {
           setSnapshotTimeout(Long.parseLong(project.snapshotTimeout))
       }
     }
