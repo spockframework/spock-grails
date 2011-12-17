@@ -12,53 +12,31 @@ buildscript {
   }
 }
 
-evaluationDependsOn ":spock-grails-support"
-
 apply plugin: "grails"
 
-grailsHome = file("grails-home").absolutePath
-
-configurations {
-  compile.exclude module: "commons-logging"
-  compile.exclude module: 'xml-apis'
-  compile.exclude module: "groovy"
-  compile.exclude module: 'org.springframework.uaa.client'
-  bootstrap.exclude module: "org.springframework.uaa.client"
-  bootstrap.exclude module: "xml-apis"
-  bootstrap.exclude group: "org.slf4j"
-  compile.exclude group: "org.slf4j"
-}
-
-configurations {
-  upload
-}
-
 dependencies {
-  logging "commons-logging:commons-logging:1.1.1", "org.slf4j:jcl-over-slf4j:1.6.1"
-  
   compile project(':spock-grails-support')
-  
-  runtime "hsqldb:hsqldb:1.8.0.5"  
-  runtime "net.sf.ehcache:ehcache-core:1.7.1"
-  
-  def grailsPlugins = { String[] plugins -> plugins.collect { "org.grails:grails-plugin-$it:$grailsVersion" } }
-  test grailsPlugins("tomcat", "i18n", "datasource", "services")
-  test("org.grails:grails-hibernate:$grailsVersion")
-  
+
+  ["plugin-tomcat", "plugin-datasource", "plugin-services", "hibernate"].each { module ->
+    compile("org.grails:grails-$module:$grailsVersion")
+  }
+
   // Needed by release plugin
-  compile "org.apache.maven:maven-ant-tasks:2.1.0",
-          "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0"
-          
+  compile "org.apache.maven:maven-ant-tasks:2.1.0"
+
+  compile "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0", {
+    exclude module: "xml-apis"
+  }
+
   compile "org.tmatesoft.svnkit:svnkit:1.3.5", {
     exclude module: "jna"
     exclude module: "trilead-ssh2"
     exclude module: "sqljet"
   }
-  
 }
 
-// Used in BuildConfig to selectively list specify dependencies 
-System.setProperty("spock.building", "true") 
+// Used in BuildConfig to selectively list specify dependencies
+System.setProperty("spock.building", "true")
 System.setProperty("grails.full.stacktrace", "true")
 
 def findTemplatedFiles = {
@@ -76,7 +54,7 @@ task createTemplatedFiles << {
     "spock-version": project.spockVersion,
     "plugin-version": project.version
   ]
-  
+
   findTemplatedFiles().each { inputFile, outputFile ->
     def input = inputFile.getText("UTF-8")
     templateVariables.each { k, v ->
@@ -94,7 +72,7 @@ task clean(type: Delete, overwrite: true) { task ->
   delete buildDir
   delete "target"
   delete "plugin.xml"
-  
+
   projectDir.eachFile {
     if (it.name.endsWith(".zip")) {
       task.delete(it)
@@ -104,7 +82,7 @@ task clean(type: Delete, overwrite: true) { task ->
   findTemplatedFiles().each { inputFile, outputFile ->
     task.delete(outputFile)
   }
-  
+
   projectDir.eachDirRecurse {
     if (it.exists() && it.list().size() == 0) {
       task.delete(it)
@@ -112,18 +90,18 @@ task clean(type: Delete, overwrite: true) { task ->
   }
 }
 
-task uploadArchives(type: GrailsTask, dependsOn: ["assemble", project(":spock-grails-support").install]) {
+task release(type: GrailsTask) {
   command "publish-plugin"
   configuration "compile"
   useRuntimeClasspathForBootstrap true
-  
+
   args "--noScm"
   if (project.version.endsWith("-SNAPSHOT")) args += " -snapshot"
-  
+
   doFirst {
     System.setProperty("spock.releasing", "true")
   }
-  
+
   doLast {
     System.clearProperty("spock.releasing")
   }

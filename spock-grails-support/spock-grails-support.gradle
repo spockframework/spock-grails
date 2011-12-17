@@ -6,25 +6,11 @@ version = spockVersion
 
 dependencies {
   groovy groovyDependency
-  compile spockDependency, "org.apache.ant:ant:1.8.1"
-  
-  ["core", "bootstrap", "web", "test", "plugin-testing", "plugin-converters"].each { module ->
-    compile("org.grails:grails-$module:$grailsVersion") {
-      transitive = false
-    }
+  compile spockDependency
+
+  ["test", "plugin-testing"].each { module ->
+    compile("org.grails:grails-$module:$grailsVersion")
   }
-  
-  ["core", "context", "context-support", "beans", "webmvc", "web"].each { module ->
-    compile("org.springframework:spring-$module:3.0.5.RELEASE") {
-      transitive = false
-    }
-  }
-  
-  compile("org.apache.ant:ant-junit:1.8.2") {
-    transitive = false
-  }
-  
-  compile("javax.servlet:servlet-api:2.5")
 }
 
 modifyPom {
