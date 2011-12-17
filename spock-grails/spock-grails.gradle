@@ -8,6 +8,9 @@ buildscript {
   dependencies {
     classpath "org.grails:grails-gradle-plugin:1.1-SNAPSHOT"
   }
+  configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 24, 'hours'
+  }
 }
 
 evaluationDependsOn ":spock-grails-support"
