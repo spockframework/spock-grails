@@ -18,8 +18,8 @@ allprojects { project ->
   }
 
   repositories {
-    mavenRepo(name: "Spock Snapshots", urls: "http://m2repo.spockframework.org/snapshots")
-    mavenRepo(name: "Grails Repo", urls: "http://repo.grails.org/grails/core")
+    maven { url "http://m2repo.spockframework.org/snapshots" }
+    maven { url "http://repo.grails.org/grails/core" }
   }
 }
 

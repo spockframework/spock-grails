@@ -2,7 +2,7 @@ import org.grails.gradle.plugin.GrailsTask
 
 buildscript {
   repositories {
-    mavenRepo name: "Grails Repo", urls: "http://repo.grails.org/grails/repo"
+    maven { url "http://repo.grails.org/grails/core" }
   }
   dependencies {
     classpath "org.grails:grails-gradle-plugin:1.1-SNAPSHOT"
