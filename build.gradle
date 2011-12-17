@@ -4,6 +4,7 @@ allprojects { project ->
   version = '0.6-SNAPSHOT'
   group = "org.spockframework"
   isSnapshot = version.endsWith("-SNAPSHOT")
+  isCiBuild = project.hasProperty("isCiBuild")
 
   spockVersion = "0.6-groovy-1.8-SNAPSHOT"
   spockDependency = "org.spockframework:spock-core:$spockVersion"
@@ -14,7 +15,7 @@ allprojects { project ->
   groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 
   configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 24, 'hours'
+    resolutionStrategy.cacheChangingModulesFor isCiBuild ? 0 : 24, 'hours'
   }
 
   repositories {
