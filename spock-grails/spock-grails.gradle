@@ -2,7 +2,6 @@ import org.grails.gradle.plugin.GrailsTask
 
 buildscript {
   repositories {
-    mavenLocal()
     mavenRepo name: "Grails Repo", urls: "http://repo.grails.org/grails/repo"
   }
   dependencies {
