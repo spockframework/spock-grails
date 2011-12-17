@@ -8,9 +8,9 @@ allprojects { project ->
   spockVersion = "0.6-groovy-1.8-SNAPSHOT"
   spockDependency = "org.spockframework:spock-core:$spockVersion"
 
-  grailsVersion = "2.0.0.M1"
+  grailsVersion = "2.0.0"
 
-  groovyVersion = "1.8.1"
+  groovyVersion = "1.8.4"
   groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 
   configurations.all {
