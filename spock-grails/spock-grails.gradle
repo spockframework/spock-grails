@@ -5,10 +5,7 @@ buildscript {
     maven { url "http://repo.grails.org/grails/core" }
   }
   dependencies {
-    classpath "org.grails:grails-gradle-plugin:1.1-SNAPSHOT"
-  }
-  configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 24, 'hours'
+    classpath "org.grails:grails-gradle-plugin:1.1.0"
   }
 }
 
