@@ -117,7 +117,7 @@ class UnitSpec extends Specification {
    * so that a "validate()" method is added. This can then be used
    * to test the constraints on the class.
    */
-  protected void mockForConstraintsTests(Class clazz, List instances = []) {
+  protected mockForConstraintsTests(Class clazz, List instances = []) {
     registerMetaClass(clazz)
     MockUtils.prepareForConstraintsTests(clazz, errorsMap, instances)
   }
@@ -131,7 +131,7 @@ class UnitSpec extends Specification {
    * @param instances An optional list of domain instances to use
    * as the data backing the dynamic methods.
    */
-  protected void mockDomain(Class domainClass, List instances = []) {
+  protected mockDomain(Class domainClass, List instances = []) {
     registerMetaClass(domainClass)
     def dc = MockUtils.mockDomain(domainClass, errorsMap, instances)
 
@@ -160,7 +160,7 @@ class UnitSpec extends Specification {
    * Mocks a controller class, providing implementations of standard methods
    * like render and redirect
    */
-  protected void mockController(Class controllerClass) {
+  protected mockController(Class controllerClass) {
     registerMetaClass(controllerClass)
     MockUtils.mockController(controllerClass)
   }
@@ -170,7 +170,7 @@ class UnitSpec extends Specification {
    * well as "out", "throwTagError()", and an implementation of
    * the "render" tag.
    */
-  protected void mockTagLib(Class tagLibClass) {
+  protected mockTagLib(Class tagLibClass) {
     registerMetaClass(tagLibClass)
     MockUtils.mockTagLib(tagLibClass)
   }
@@ -184,12 +184,12 @@ class UnitSpec extends Specification {
    * @param enableDebug An optional flag to switch on printing of
    * debug statements.
    */
-  protected void mockLogging(Class clazz, boolean enableDebug = false) {
+  protected mockLogging(Class clazz, boolean enableDebug = false) {
     registerMetaClass(clazz)
     MockUtils.mockLogging(clazz, enableDebug)
   }
 
-  protected void mockConfig(String config) {
+  protected mockConfig(String config) {
     def c = new ConfigSlurper().parse(config)
     ConfigurationHolder.config = c
   }
