@@ -15,7 +15,12 @@ allprojects { project ->
   groovyDependency = "org.codehaus.groovy:groovy-all:$groovyVersion"
 
   configurations.all {
-    resolutionStrategy.cacheChangingModulesFor isCiBuild ? 0 : 24, 'hours'
+    if (isCiBuild) {
+      resolutionStrategy.cacheChangingModulesFor 10, "minutes"
+    } else {
+      resolutionStrategy.cacheChangingModulesFor 24, "hours"
+    }
+    
   }
 
   repositories {
