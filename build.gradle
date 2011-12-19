@@ -20,7 +20,6 @@ allprojects { project ->
     } else {
       resolutionStrategy.cacheChangingModulesFor 24, "hours"
     }
-    
   }
 
   repositories {
