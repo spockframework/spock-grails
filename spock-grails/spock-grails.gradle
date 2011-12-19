@@ -92,8 +92,8 @@ task release(type: GrailsTask) {
   configuration "compile"
   useRuntimeClasspathForBootstrap true
 
-  args "--noScm"
-  if (project.version.endsWith("-SNAPSHOT")) args += " -snapshot"
+  args "--noScm --repository=grailsCentral --portal=grailsCentral"
+  if (project.version.endsWith("-SNAPSHOT")) args += " --snapshot"
 
   doFirst {
     System.setProperty("spock.releasing", "true")
