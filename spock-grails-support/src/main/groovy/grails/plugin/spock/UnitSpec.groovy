@@ -117,7 +117,7 @@ class UnitSpec extends Specification {
    * so that a "validate()" method is added. This can then be used
    * to test the constraints on the class.
    */
-  protected mockForConstraintsTests(Class clazz, List instances = []) {
+  protected void mockForConstraintsTests(Class clazz, List instances = []) {
     registerMetaClass(clazz)
     MockUtils.prepareForConstraintsTests(clazz, errorsMap, instances)
   }
