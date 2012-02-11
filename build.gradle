@@ -1,5 +1,7 @@
 description = "Spock Framework support for Grails"
 
+apply plugin: "idea"
+
 allprojects { project ->
   version = '0.6-SNAPSHOT'
   group = "org.spockframework"
@@ -25,6 +27,19 @@ allprojects { project ->
   repositories {
     maven { url "http://m2repo.spockframework.org/snapshots" }
     maven { url "http://repo.grails.org/grails/core" }
+  }
+}
+
+idea {
+  project {
+    jdkName "1.6"
+    ipr {
+      withXml { provider ->
+        def node = provider.asNode()
+        node.component.find { it.'@name' == 'VcsDirectoryMappings' }?.mapping[0].'@vcs' = 'Git'
+        node.append(new XmlParser().parse(file("ideaCodeStyle.xml")))
+      }
+    }
   }
 }
 

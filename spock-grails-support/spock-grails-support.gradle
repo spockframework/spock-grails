@@ -1,4 +1,6 @@
 apply plugin: "groovy"
+apply plugin: "idea"
+
 apply from: rootProject.file("gradle/publishMaven.gradle")
 
 description = "Spock Framework - Grails Plugin Support"
