@@ -13,6 +13,8 @@ repositories {
 
 ["17", "18"].each { name ->
   def named = { "groovy${name}${it.capitalize()}"}
+  def thisSpockVersion = spockVersion("${name[0]}.${name[1]}")
+  
   [
     (named("groovy")): [],
     (named("compile")): [named("groovy")],
@@ -32,7 +34,7 @@ repositories {
       groovy.srcDir "src/main/groovy"
       compileClasspath = configurations[named("compile")]
       runtimeClasspath = configurations[named("runtime")]
-      compiledBy named("compiled")
+      compiledBy named("compile")
       output.classesDir = classesDir
     }
   }
@@ -46,10 +48,33 @@ repositories {
 
   task(named("jar"), type: Jar) {
     from tasks[named("compile")]
+    version thisSpockVersion
   }
 
+  task(named("groovydoc"), type: Groovydoc) {
+    source sourceSets[name].groovy
+    classpath = sourceSets[name].output + configurations[named("compile")]
+    groovyClasspath = configurations[named("groovy")]
+    destinationDir file("$buildDir/name/groovydoc")
+    docTitle "Spock Grails Support - $thisSpockVersion"
+    windowTitle docTitle
+  }
+  
+  task(named("javadocJar"), type: Jar) {
+    classifier "javadoc"
+    version thisSpockVersion
+    from tasks[named("groovydoc")]
+  }
+  
+  task(named("sourcesJar"), type: Jar) {
+    classifier "sources"
+    version thisSpockVersion
+    from sourceSets[name].allSource
+  }
+  
   artifacts {
     add named("runtime"), tasks[named("jar")]
+    archives tasks[named("javadocJar")], tasks[named("sourcesJar")]
   }
 }
 
