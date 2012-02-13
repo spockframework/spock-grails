@@ -5,10 +5,6 @@ apply plugin: "base"
 buildscript {
   repositories { maven { url "http://repo.grails.org/grails/core" } }
   dependencies.classpath "org.grails:grails-gradle-plugin:1.1.1-SNAPSHOT"
-  configurations.all { 
-    resolutionStrategy.cacheChangingModulesFor 60, "seconds"
-    resolutionStrategy.cacheDynamicVersionsFor 0, "minutes" 
-  }
 }
 
 System.setProperty("spock.building", "true")
@@ -187,8 +183,6 @@ task test2(type: GrailsTask, dependsOn: installPlugin2) {
 }
 
 task test(dependsOn: [test13, test2])
-
 task check(dependsOn: test)
-
 task assemble(dependsOn: packagePlugin, overwrite: true)
 task build(dependsOn: [check, assemble])
