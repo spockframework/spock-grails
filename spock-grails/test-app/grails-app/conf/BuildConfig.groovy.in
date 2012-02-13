@@ -1,0 +1,22 @@
+grails.project.dependency.resolution = {
+  inherits "global" 
+  log "warn"
+
+  repositories {
+    flatDir name: 'local', dirs: '${pluginsDir}'
+
+    grailsHome()
+    grailsCentral()
+  }
+
+  dependencies {
+    test("hsqldb:hsqldb:1.8.0.7") {
+      export = false
+    }
+  }
+
+  plugins {
+    test(":spock:${pluginVersion}")  { changing = true }
+    compile (":tomcat:$grailsVersion", ":hibernate:$grailsVersion") 
+  }
+}

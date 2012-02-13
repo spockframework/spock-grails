@@ -62,7 +62,7 @@ class UnitSpec extends Specification {
     // Register some common classes so that they can be converted
     // to XML, JSON, etc.
     def convertersInit = new ConvertersConfigurationInitializer()
-    convertersInit.initialize(new DefaultGrailsApplication())
+//    convertersInit.initialize(new DefaultGrailsApplication())
     [List, Set, Map, Errors].each { addConverters(it) }
   }
 

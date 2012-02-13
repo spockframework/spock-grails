@@ -1,19 +1,83 @@
-apply plugin: "groovy"
+apply plugin: "java-base"
 apply plugin: "idea"
 
-apply from: rootProject.file("gradle/publishMaven.gradle")
-
 description = "Spock Framework - Grails Plugin Support"
-version = spockVersion
 
-dependencies {
-  groovy groovyDependency
-  compile spockDependency
+sourceSets.all {
+  it.convention.plugins.put("groovy", new org.gradle.api.internal.tasks.DefaultGroovySourceSet(it.getDisplayName(), project.getFileResolver()))
+}
 
-  ["test", "plugin-testing"].each { module ->
-    compile("org.grails:grails-$module:$grailsVersion")
+repositories {
+  maven { url "http://m2repo.spockframework.org/snapshots" }
+}
+
+["17", "18"].each { name ->
+  def named = { "groovy${name}${it.capitalize()}"}
+  [
+    (named("groovy")): [],
+    (named("compile")): [named("groovy")],
+    (named("runtime")): [named("compile")]
+  ].each { configurationName, parents ->
+    configurations.archives.extendsFrom(configurations.add(configurationName) {
+      parents.each {
+        extendsFrom configurations.getByName(it)
+      }
+    })
+  }
+
+  def classesDir = file("$buildDir/$name/classes")
+
+  sourceSets {
+    add(name) {
+      groovy.srcDir "src/main/groovy"
+      compileClasspath = configurations[named("compile")]
+      runtimeClasspath = configurations[named("runtime")]
+      compiledBy named("compiled")
+      output.classesDir = classesDir
+    }
+  }
+
+  task(named("compile"), type: GroovyCompile) {
+    source sourceSets[name].groovy
+    destinationDir classesDir
+    classpath = configurations[named("compile")]
+    groovyClasspath = configurations[named("groovy")]
+  }
+
+  task(named("jar"), type: Jar) {
+    from tasks[named("compile")]
+  }
+
+  artifacts {
+    add named("runtime"), tasks[named("jar")]
   }
 }
+
+dependencies {
+  groovy18Groovy "org.codehaus.groovy:groovy-all:1.8.5"
+  groovy18Compile "org.spockframework:spock-core:${spockVersion("1.8")}"
+  groovy18Compile "org.slf4j:slf4j-log4j12:1.6.0"
+  ["test", "plugin-testing"].each { module ->
+    groovy18Compile("org.grails:grails-$module:2.0.0")
+  }
+
+  groovy17Groovy "org.codehaus.groovy:groovy-all:1.7.10"
+  groovy17Compile "org.spockframework:spock-core:${spockVersion("1.7")}"
+  groovy17Compile "org.apache.ant:ant-junit:1.7.1"
+  groovy17Compile "org.apache.tomcat:servlet-api:6.0.29"
+  groovy17Compile "org.slf4j:slf4j-log4j12:1.5.5"
+  ["core", "test", "web"].each { module ->
+    groovy17Compile("org.grails:grails-$module:1.3.7")
+  }
+}
+
+task install(type: Upload) {
+  configuration = configurations.archives
+}
+
+task classes(dependsOn: tasks.withType(AbstractCompile))
+
+apply from: rootProject.file("gradle/publishMaven.gradle")
 
 modifyPom {
   it.dependencies.removeAll(it.dependencies.findAll { it.groupId != "org.spockframework" })

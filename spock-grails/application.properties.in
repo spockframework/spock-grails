@@ -1,4 +1,0 @@
-#Sun Apr 03 16:45:40 EST 2011
-app.version=@plugin-version@
-app.grails.version=@grails-version@
-app.name=spock-grails
