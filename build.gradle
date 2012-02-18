@@ -30,9 +30,8 @@ idea {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion "1.0-milestone-7"
+  gradleVersion = "1.0-milestone-8a-20120216221836+0100"
 }
-
 
 task release {
   dependsOn ":spock-grails-support:uploadArchives", ":spock-grails:releasePlugin"
