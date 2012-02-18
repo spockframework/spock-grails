@@ -11,7 +11,10 @@ task setupTestAppGrails2(type: SetupGrailsProject, dependsOn: packagePlugin) {
 }
 
 configurations {
-  compileGrails2.exclude module: 'xml-apis'
+  compileGrails2 {
+    exclude module: 'xml-apis'
+    exclude module: 'slf4j-log4j12'
+  }
   runtimeGrails2.extendsFrom compileGrails2
   testGrails2.extendsFrom runtimeGrails2
   configureBaseGrailsClasspath(grails2Version, bootstrapGrails2)
@@ -21,6 +24,7 @@ dependencies {
   ["plugin-tomcat", "plugin-datasource", "plugin-services", "hibernate"].each { module ->
     compileGrails2 grailsDependency(module, grails2Version)
   }
+  compileGrails2 files("log4j")
   testGrails2 project(path: ":spock-grails-support", configuration: "groovy18Runtime")  
 }
 
