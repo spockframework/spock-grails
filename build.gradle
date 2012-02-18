@@ -42,4 +42,7 @@ task wrapper(type: Wrapper) {
   gradleVersion "1.0-milestone-7"
 }
 
-task release(dependsOn: [":spock-grails-support:uploadArchives"])
+
+task release {
+  dependsOn ":spock-grails-support:uploadArchives", ":spock-grails:releasePlugin"
+}
