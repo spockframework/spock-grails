@@ -15,20 +15,21 @@ repositories {
 task install(type: Upload) {
   configuration = configurations.archives
   mavenInstaller = repositories.mavenInstaller()
-  doFirst {
-    // Don't know why we need this, but we do.
-    // Likely due to using the maven plugin without applying the java plugin.
-    def settingsFile = new org.gradle.api.internal.artifacts.mvnsettings.MavenSettingsProvider().getUserSettingsFile()
-    if (!settingsFile.exists()) {
-      settingsFile << "<settings/>"
-    }
+}
+
+uploadArchives {
+  mavenDeployer = repositories.mavenDeployer {
+    snapshotRepository(url: "file:///var/www/m2repo/snapshots")
+    repository(url: "file:///var/www/m2repo/release")
   }
 }
+
+project.poms = []
 
 ["17", "18"].each { name ->
   def named = { "groovy${name}${it.capitalize()}"}
   def thisSpockVersion = spockVersion("${name[0]}.${name[1]}")
-  
+
   [
     (named("groovy")): [],
     (named("compile")): [named("groovy")],
@@ -73,33 +74,29 @@ task install(type: Upload) {
     docTitle "Spock Grails Support - $thisSpockVersion"
     windowTitle docTitle
   }
-  
+
   task(named("javadocJar"), type: Jar) {
     classifier "javadoc"
     version thisSpockVersion
     from tasks[named("groovydoc")]
   }
-  
+
   task(named("sourcesJar"), type: Jar) {
     classifier "sources"
     version thisSpockVersion
     from sourceSets[name].allSource
   }
-  
+
   artifacts {
     add named("runtime"), tasks[named("jar")]
     archives tasks[named("javadocJar")], tasks[named("sourcesJar")]
   }
-  
-  install {
-    configure(mavenInstaller) {
-      addFilter(name) { artifact, file -> artifact.moduleRevisionId.revision == thisSpockVersion }
-      configure(pom(name)) {
-        ["compile", "runtime"].each {
-          scopeMappings.addMapping 1, configurations[named(it)], it
-        }
-      }
-    }
+
+  configure([install.mavenInstaller, uploadArchives.mavenDeployer]) {
+    def pom = addFilter(named("pom")) { artifact, file -> file.name.contains(thisSpockVersion) }
+    ["compile", "runtime"].each { pom.scopeMappings.addMapping 1, configurations[named(it)], it }
+    pom.version = thisSpockVersion
+    poms << pom
   }
 }
 
@@ -123,8 +120,46 @@ dependencies {
 
 task classes(dependsOn: tasks.withType(AbstractCompile))
 
-apply from: rootProject.file("gradle/publishMaven.gradle")
+modifyPom = { Closure modification ->
+  project.poms.each {
+    it.whenConfigured(modification)
+  }
+}
 
 modifyPom {
+  it.project {
+    name project.description
+    url "http://spockframework.org"
+    description "Integrates the Spock Framework with the Grails Framework"
+
+    licenses {
+      license {
+        name "The Apache Software License, Version 2.0"
+        url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        distribution "repo"
+      }
+    }
+
+    scm {
+      connection "scm:git:git://github.com/spockframework/spock.git"
+      developerConnection "scm:git:ssh://git@github.com/spockframework/spock.git"
+      url "http://code.google.com/p/spock/source/browse"
+    }
+
+    developers {
+      developer {
+        id "pniederw"
+        name "Peter Niederwieser"
+        email "pniederw@gmail.com"
+      }
+
+      developer {
+        id "ldaley"
+        name "Luke Daley"
+        email "ld@ldaley.com"
+      }
+    }
+  }
+
   it.dependencies.removeAll(it.dependencies.findAll { it.groupId != "org.spockframework" })
 }
