@@ -10,22 +10,26 @@ buildscript {
 System.setProperty("spock.building", "true")
 System.setProperty("grails.full.stacktrace", "true")
 
-def pluginVersion = version
-def pluginGrailsVersion = "2.0.0"
-def pluginSpockVersion = "$version-groovy-1.8"
+pluginVersion = version
+pluginGrailsVersion = "2.0.0"
+pluginSpockVersion = "$version-groovy-1.8"
 if (isSnapshot) {
   pluginVersion += "-SNAPSHOT"
   pluginSpockVersion += "-SNAPSHOT"
 }
 
-def grailsDependency = { module, grailsVersion -> "org.grails:grails-$module:$grailsVersion" }
+grailsDependency = { module, grailsVersion -> "org.grails:grails-$module:$grailsVersion" }
+
+configureBaseGrailsClasspath = { grailsVersion, configuration ->
+  GrailsDependenciesUtil.configureBootstrapClasspath(project, grailsVersion, configuration)
+}
 
 configurations {
-  GrailsDependenciesUtil.configureBootstrapClasspath(project, pluginGrailsVersion, pluginBootstrap)
+  configureBaseGrailsClasspath(pluginGrailsVersion, pluginBootstrap)
 }
 
 dependencies {
-  pluginBootstrap grailsDependency("bootstrap", pluginGrailsVersion), files("log4j")
+  pluginBootstrap files("log4j")
   pluginBootstrap "org.apache.maven:maven-ant-tasks:2.1.0"
   pluginBootstrap "org.codehaus.groovy.modules.http-builder:http-builder:0.5.0", {
     exclude module: "xml-apis"
@@ -54,6 +58,9 @@ class SetupGrailsProject extends Sync {
     }
   }
 }
+
+project.SetupGrailsProject = SetupGrailsProject
+project.GrailsTask = GrailsTask
 
 task setupPlugin(type: SetupGrailsProject) {
   from "plugin"
@@ -89,104 +96,10 @@ task releasePlugin(type: GrailsTask, dependsOn: packagePlugin) {
   doLast { System.clearProperty("spock.releasing") }
 }
 
-def grails13Version = "1.3.7"
-
-task setupTestAppGrails13(type: SetupGrailsProject, dependsOn: packagePlugin) {
-  from "test-app"
-  into "$buildDir/test-app-grails-1.3"
-  from ("$setupPlugin.destinationDir") {
-    include "*.zip"
-    into "plugins"
-  }
-  props grailsVersion: grails13Version, pluginVersion: pluginVersion, pluginsDir: "$destinationDir/plugins"
-}
-
-configurations {
-  compileGrails13.exclude module: 'xml-apis'
-  runtimeGrails13.extendsFrom compileGrails13
-  testGrails13.extendsFrom runtimeGrails13
-  GrailsDependenciesUtil.configureBootstrapClasspath(project, grails13Version, bootstrapGrails13)
-}
-
-dependencies {
-  bootstrapGrails13 grailsDependency("core", grails13Version)
-  testGrails13 project(path: ":spock-grails-support", configuration: "groovy17Runtime")  
-  runtimeGrails13 "org.grails:grails-crud:${grails13Version}"
-  runtimeGrails13 "org.grails:grails-gorm:${grails13Version}"
-  runtimeGrails13 "hsqldb:hsqldb:1.8.0.5"
-  runtimeGrails13 "net.sf.ehcache:ehcache-core:1.7.1"
-  runtimeGrails13 "org.aspectj:aspectjrt:1.6.6"
-}
-
-tasks.withType(GrailsTask).matching { it.name.endsWith("Grails13") }.all {
-  dependsOn setupTestAppGrails13
-  projectDir setupTestAppGrails13.destinationDir
-  targetDir "${setupTestAppGrails13.destinationDir}/target"
-  
-  bootstrapClasspath = configurations.bootstrapGrails13
-  bootstrapRuntimeClasspath = configurations.bootstrapGrails13
-  compileClasspath = configurations.compileGrails13
-  runtimeClasspath = configurations.runtimeGrails13
-  testClasspath = configurations.testGrails13
-}
-
-task installPluginGrails13(type: GrailsTask) {
-  command "install-plugin"
-  args "$setupPlugin.destinationDir/grails-spock-${pluginVersion}.zip"
-}
-
-task testGrails13(type: GrailsTask, dependsOn: installPluginGrails13) {
-  command "test-app"
-}
-
-def grails2Version = "2.0.0"
-
-task setupTestAppGrails2(type: SetupGrailsProject, dependsOn: packagePlugin) {
-  from "test-app"
-  into "$buildDir/test-app-grails-2"
-  from ("$setupPlugin.destinationDir") {
-    include "*.zip"
-    into "plugins"
-  }
-  props grailsVersion: grails2Version, pluginVersion: pluginVersion, pluginsDir: "$destinationDir/plugins"
-}
-
-configurations {
-  compileGrails2.exclude module: 'xml-apis'
-  runtimeGrails2.extendsFrom compileGrails2
-  testGrails2.extendsFrom runtimeGrails2
-  GrailsDependenciesUtil.configureBootstrapClasspath(project, grails2Version, bootstrapGrails2)
-}
-
-dependencies {
-  ["plugin-tomcat", "plugin-datasource", "plugin-services", "hibernate"].each { module ->
-    compileGrails2 grailsDependency(module, grails2Version)
-  }
-  testGrails2 project(path: ":spock-grails-support", configuration: "groovy18Runtime")  
-}
-
-tasks.withType(GrailsTask).matching { it.name.endsWith("Grails2") }.all {
-  dependsOn setupTestAppGrails2
-  projectDir setupTestAppGrails2.destinationDir
-  targetDir "${setupTestAppGrails2.destinationDir}/target"
-  
-  bootstrapClasspath = configurations.bootstrapGrails2
-  bootstrapRuntimeClasspath = configurations.bootstrapGrails2
-  compileClasspath = configurations.compileGrails2
-  runtimeClasspath = configurations.runtimeGrails2
-  testClasspath = configurations.testGrails2
-}
-
-task installPluginGrails2(type: GrailsTask) {
-  command "install-plugin"
-  args "$setupPlugin.destinationDir/grails-spock-${pluginVersion}.zip"
-}
-
-task testGrails2(type: GrailsTask, dependsOn: installPluginGrails2) {
-  command "test-app"
-}
-
-task test(dependsOn: [testGrails13, testGrails2])
+task test(dependsOn: tasks.withType(GrailsTask).matching { it.command == "test-app" })
 task check(dependsOn: test)
 task assemble(dependsOn: packagePlugin, overwrite: true)
 task build(dependsOn: [check, assemble])
+
+apply from: "gradle/testWithGrails2.gradle"
+apply from: "gradle/testWithGrails13.gradle"
