@@ -6,18 +6,9 @@ allprojects { project ->
   version = '0.6'
   group = "org.spockframework"
   isSnapshot = true
-  isCiBuild = project.hasProperty("isCiBuild")
 
   spockVersion = { groovyVersion ->
     "$version-groovy-$groovyVersion" + (isSnapshot ? "-SNAPSHOT" : "")
-  }
-
-  configurations.all {
-    if (isCiBuild) {
-      resolutionStrategy.cacheChangingModulesFor 1, "minutes"
-    } else {
-      resolutionStrategy.cacheChangingModulesFor 1, "minutes"
-    }
   }
 
   repositories {
