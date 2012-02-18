@@ -48,6 +48,10 @@ class SetupGrailsProject extends Sync {
         file.name = file.name[0..-4]
       }
     }
+    
+    doLast {
+      project.file("$destinationDir/src/java").mkdirs()
+    }
   }
 }
 
