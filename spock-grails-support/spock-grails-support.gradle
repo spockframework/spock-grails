@@ -1,6 +1,7 @@
 apply plugin: "java-base"
 apply plugin: "maven"
 apply plugin: "idea"
+apply plugin: "signing"
 
 description = "Spock Framework - Grails Plugin Support"
 
@@ -22,6 +23,12 @@ uploadArchives {
     snapshotRepository(url: "file:///var/www/m2repo/snapshots")
     repository(url: "file:///var/www/m2repo/release")
   }
+}
+
+signing {
+  sign configurations.archives
+  required { !isSnapshot && gradle.taskGraph.hasTask(uploadArchives) }
+  [install.mavenInstaller, uploadArchives.mavenDeployer]*.beforeDeployment { signPom(it) }
 }
 
 project.poms = []
