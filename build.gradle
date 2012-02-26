@@ -6,6 +6,7 @@ allprojects { project ->
   version = '0.6'
   group = "org.spockframework"
   isSnapshot = true
+  isStagingBuild = false // should we pull spock from the dependency repo?
   isCiBuild = project.hasProperty("ciBuild")
 
   spockVersion = { groovyVersion ->

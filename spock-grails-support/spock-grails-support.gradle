@@ -10,7 +10,13 @@ sourceSets.all {
 }
 
 repositories {
-  maven { url "http://m2repo.spockframework.org/snapshots" }
+  if (isSnapshot) {
+    maven { url "http://m2repo.spockframework.org/snapshots" }
+  } else if (isStagingBuild) {
+    maven { url "«staging repo here»" }
+  } else {
+    mavenCentral()
+  }
 }
 
 task install(type: Upload) {
@@ -28,7 +34,7 @@ addAuthentication = { task, repository ->
 
 uploadArchives {
   mavenDeployer = repositories.mavenDeployer {
-    if (isSnapshotVersion) {
+    if (isSnapshot) {
       snapshotRepository(url: "file:///var/www/m2repo/snapshots")
     } else {
       repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
