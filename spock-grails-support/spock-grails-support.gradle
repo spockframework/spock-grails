@@ -18,10 +18,23 @@ task install(type: Upload) {
   mavenInstaller = repositories.mavenInstaller()
 }
 
+addAuthentication = { task, repository ->
+  gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.hasTask(task)) {
+      repository.authentication(userName: sonatypeOssUsername, password: sonatypeOssPassword)
+    }
+  }
+}
+
 uploadArchives {
   mavenDeployer = repositories.mavenDeployer {
-    snapshotRepository(url: "file:///var/www/m2repo/snapshots")
-    repository(url: "file:///var/www/m2repo/release")
+    if (isSnapshotVersion) {
+      snapshotRepository(url: "file:///var/www/m2repo/snapshots")
+    } else {
+      repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+        addAuthentication(task, delegate)
+      }
+    }
   }
 }
 
