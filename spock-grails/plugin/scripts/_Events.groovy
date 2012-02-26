@@ -57,11 +57,13 @@ eventDefaultStart = {
             default:
                 superClass = "UnitSpec"
         }
-        createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "Spec", path: "test/unit", superClass: superClass
+        createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "Spec", path: "test/unit", superClass: superClass, templatePath: "templates/testing",
+        skipPackagePrompt: args['skipPackagePrompt']
     }
 
     createIntegrationTest = { Map args = [:] ->
-        createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "Spec", path: "test/integration", superClass: "IntegrationSpec"
+        createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "Spec", path: "test/integration", superClass: "IntegrationSpec", templatePath:"templates/testing",
+        skipPackagePrompt: args['skipPackagePrompt']
     }
 }
 
