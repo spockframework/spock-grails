@@ -32,6 +32,7 @@ class GrailsSpecTestType extends GrailsTestTypeSupport {
   public static final TEST_SUFFIXES = ["Spec", "Specification"].asImmutable()
   
   private final List<Class> specClasses = []
+  private int featureCount = 0
   
   GrailsSpecTestType(String name, String relativeSourcePath) {
     super(name, relativeSourcePath)
@@ -57,12 +58,14 @@ class GrailsSpecTestType extends GrailsTestTypeSupport {
 
     optimizeSpecRunOrderIfEnabled()
 
-    specClasses.sum 0, { SpecUtil.getFeatureCount(it) }
+    featureCount = specClasses.sum(0) { SpecUtil.getFeatureCount(it) }
+    featureCount
   }
 
   protected GrailsTestTypeResult doRun(GrailsTestEventPublisher eventPublisher) {
     def junit = new JUnitCore()
     def result = new GrailsSpecTestTypeResult()
+    
     junit.addListener(new OverallRunListener(eventPublisher,
         createJUnitReportsFactory(), createSystemOutAndErrSwapper(), result))
     junit.run(specClasses as Class[])
@@ -84,4 +87,12 @@ class GrailsSpecTestType extends GrailsTestTypeSupport {
     new File(buildBinding.grailsSettings.testSourceDir, relativeSourcePath)
   }
   
+  protected addGrails2TerminalListenerIfCan(JUnitCore junit) {
+    try {
+      def clazz = buildBinding.classLoader.loadClass("org.codehaus.groovy.grails.test.event.GrailsTestRunNotifier")
+      junit.addListener(clazz.newInstance(featureCount))
+    } catch (ClassNotFoundException e) {
+      // noop
+    }
+  }
 }
