@@ -33,20 +33,6 @@ loadSpockTestTypes = {
       types << specTestTypeClass.newInstance('spock', name)
     }
   }
-  checkSpockGroovyCompatibility()
-}
-
-checkSpockGroovyCompatibility = {
-  def spockRelease = classLoader.loadClass("org.spockframework.util.SpockReleaseInfo")
-  def groovyRelease = classLoader.loadClass("org.spockframework.util.GroovyReleaseInfo")
-  
-  if (!spockRelease.isCompatibleWithGroovyVersion(groovyRelease.version)) {
-    event("StatusError", [
-      "This Spock version ($spockRelease.version) is incompatible with this Groovy version ($groovyRelease.version). " +
-      "Please consult the installation tab @ http://grails.org/plugin/spock for instructions on how to configure the right Spock version."
-    ])
-    exit 1
-  }
 }
 
 eventAllTestsStart = {
