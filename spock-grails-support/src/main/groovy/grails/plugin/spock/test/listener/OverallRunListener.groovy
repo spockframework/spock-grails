@@ -32,14 +32,15 @@ class OverallRunListener extends RunListener {
   private final JUnitReportsFactory reportsFactory
   private final SystemOutAndErrSwapper outAndErrSwapper
   private final GrailsSpecTestTypeResult result
-  
+  private final grailsNotifier
   private PerSpecRunListener perSpecListener
 
-  OverallRunListener(GrailsTestEventPublisher eventPublisher, JUnitReportsFactory reportsFactory, SystemOutAndErrSwapper outAndErrSwapper, GrailsSpecTestTypeResult result) {
+  OverallRunListener(GrailsTestEventPublisher eventPublisher, JUnitReportsFactory reportsFactory, SystemOutAndErrSwapper outAndErrSwapper, GrailsSpecTestTypeResult result, grailsNotifier) {
     this.eventPublisher = eventPublisher
     this.reportsFactory = reportsFactory
     this.outAndErrSwapper = outAndErrSwapper
     this.result = result
+    this.grailsNotifier = grailsNotifier
   }
 
   void testRunStarted(Description description) {
@@ -81,7 +82,8 @@ class OverallRunListener extends RunListener {
 
       def specName = description.className
       perSpecListener = new PerSpecRunListener(specName, eventPublisher,
-          reportsFactory.createReports(specName), outAndErrSwapper, result)
+          reportsFactory.createReports(specName), outAndErrSwapper, result, 
+          grailsNotifier)
 
       perSpecListener.start()
     }

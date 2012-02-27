@@ -67,7 +67,9 @@ class GrailsSpecTestType extends GrailsTestTypeSupport {
     def result = new GrailsSpecTestTypeResult()
     
     junit.addListener(new OverallRunListener(eventPublisher,
-        createJUnitReportsFactory(), createSystemOutAndErrSwapper(), result))
+        createJUnitReportsFactory(), createSystemOutAndErrSwapper(), result,
+        createGrails2TerminalListenerIfCan()))
+    
     junit.run(specClasses as Class[])
     result
   }
@@ -87,12 +89,12 @@ class GrailsSpecTestType extends GrailsTestTypeSupport {
     new File(buildBinding.grailsSettings.testSourceDir, relativeSourcePath)
   }
   
-  protected addGrails2TerminalListenerIfCan(JUnitCore junit) {
+  protected createGrails2TerminalListenerIfCan() {
     try {
       def clazz = buildBinding.classLoader.loadClass("org.codehaus.groovy.grails.test.event.GrailsTestRunNotifier")
-      junit.addListener(clazz.newInstance(featureCount))
+      clazz.newInstance(featureCount)
     } catch (ClassNotFoundException e) {
-      // noop
+      null
     }
   }
 }

@@ -37,6 +37,7 @@ class PerSpecRunListener {
   private final SystemOutAndErrSwapper outAndErrSwapper
   private final GrailsSpecTestTypeResult result
   private final JUnitTest testSuite
+  private final grailsNotifier
 
   private long startTime
 
@@ -62,13 +63,14 @@ class PerSpecRunListener {
   private final Map<Description, JUnit4TestCaseFacade> testsByDescription = [:]
 
   PerSpecRunListener(String name, GrailsTestEventPublisher eventPublisher, JUnitReports reports,
-      SystemOutAndErrSwapper outAndErrSwapper, GrailsSpecTestTypeResult result) {
+      SystemOutAndErrSwapper outAndErrSwapper, GrailsSpecTestTypeResult result, grailsNotifier) {
     this.name = name
     this.eventPublisher = eventPublisher
     this.reports = reports
     this.outAndErrSwapper = outAndErrSwapper
     this.result = result
-
+    this.grailsNotifier = grailsNotifier
+    
     testSuite = new JUnitTest(name)
   }
 
@@ -99,6 +101,8 @@ class PerSpecRunListener {
     def testName = description.methodName
 
     eventPublisher.testStart(testName)
+    grailsNotifier?.fireTestStarted(description)
+
     reports.startTest(getTest(description))
 
     [System.out, System.err]*.println("--Output from ${testName}--")
@@ -124,6 +128,8 @@ class PerSpecRunListener {
 
     def testCase = getTest(failure.description)
     def exception = failure.exception
+
+    grailsNotifier?.fireTestFailure(failure)
 
     if (exception instanceof AssertionError) {
       eventPublisher.testFailure(testName, exception)
