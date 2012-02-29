@@ -9,16 +9,6 @@ sourceSets.all {
   it.convention.plugins.put("groovy", new org.gradle.api.internal.tasks.DefaultGroovySourceSet(it.getDisplayName(), project.getFileResolver()))
 }
 
-repositories {
-  if (isSnapshot) {
-    maven { url "http://m2repo.spockframework.org/snapshots" }
-  } else if (isStagingBuild) {
-    maven { url "«staging repo here»" }
-  } else {
-    mavenCentral()
-  }
-}
-
 task install(type: Upload) {
   configuration = configurations.archives
   mavenInstaller = repositories.mavenInstaller()

@@ -3,14 +3,14 @@ description = "Spock Framework support for Grails"
 apply plugin: "idea"
 
 allprojects { project ->
-  version = '0.6'
+  version = '0.6-rc-1'
   group = "org.spockframework"
-  isSnapshot = true
+  isSnapshot = false
   isStagingBuild = false // should we pull spock from the dependency repo?
   isCiBuild = project.hasProperty("ciBuild")
 
   spockVersion = { groovyVersion ->
-    "$version-groovy-$groovyVersion" + (isSnapshot ? "-SNAPSHOT" : "")
+    "0.6-groovy-$groovyVersion-rc-1" + (isSnapshot ? "-SNAPSHOT" : "")
   }
 
   if (isCiBuild) {
@@ -19,6 +19,13 @@ allprojects { project ->
 
   repositories {
     maven { url "http://repo.grails.org/grails/core" }
+    if (isSnapshot) {
+      maven { url "http://m2repo.spockframework.org/snapshots" }
+    } else if (isStagingBuild) {
+      maven { url "«staging repo here»" }
+    } else {
+      mavenCentral()
+    }
   }
 }
 

@@ -16,7 +16,6 @@ grails.project.dependency.resolution = {
   }
 
   plugins {
-    test(":spock:${pluginVersion}")  { changing = true }
     compile (":tomcat:$grailsVersion", ":hibernate:$grailsVersion") 
   }
 }
