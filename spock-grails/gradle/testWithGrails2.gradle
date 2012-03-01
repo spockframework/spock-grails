@@ -3,10 +3,6 @@ def grails2Version = "2.0.0"
 task setupTestAppGrails2(type: SetupGrailsProject, dependsOn: packagePlugin) {
   from "test-app"
   into "$buildDir/test-app-grails-2"
-  from ("$setupPlugin.destinationDir") {
-    include "*.zip"
-    into "plugins"
-  }
   props grailsVersion: grails2Version, pluginVersion: pluginVersion, pluginsDir: "$destinationDir/plugins"
 }
 
@@ -43,6 +39,10 @@ tasks.withType(GrailsTask).matching { it.name.endsWith("Grails2") }.all {
 task installPluginGrails2(type: GrailsTask) {
   command "install-plugin"
   args "$setupPlugin.destinationDir/grails-spock-${pluginVersion}.zip"
+  doFirst { 
+    delete "~/.grails/ivy-cache/org.spockframework" 
+    delete "~/.grails/2.0.0/cached-installed-plugins/spock-${version}.zip"
+  }
 }
 
 task testGrails2(type: GrailsTask, dependsOn: installPluginGrails2) {

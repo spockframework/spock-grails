@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+grails.project.work.dir = "target"
 grails.project.dependency.resolution = {
 
   def spockVersion = "${spockVersion}"
