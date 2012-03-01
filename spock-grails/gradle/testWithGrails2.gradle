@@ -45,7 +45,7 @@ task installPluginGrails2(type: GrailsTask) {
   args "$setupPlugin.destinationDir/grails-spock-${pluginVersion}.zip"
   doFirst { 
     delete "~/.grails/ivy-cache/org.spockframework" 
-    delete "~/.grails/2.0.0/cached-installed-plugins/spock-$version.zip"
+    delete "~/.grails/2.0.0/cached-installed-plugins/spock-${version}.zip"
   }
 }
 
