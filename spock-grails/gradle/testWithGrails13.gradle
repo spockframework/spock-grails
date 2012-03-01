@@ -3,7 +3,11 @@ def grails13Version = "1.3.7"
 task setupTestAppGrails13(type: SetupGrailsProject, dependsOn: packagePlugin) {
   from "test-app"
   into "$buildDir/test-app-grails-1.3"
-  props grailsVersion: grails13Version, pluginVersion: pluginVersion, pluginsDir: "$destinationDir/plugins"
+  from ("$setupPlugin.destinationDir") {
+    include "*.zip"
+    into "lib"
+  }
+  props grailsVersion: grails13Version, pluginVersion: pluginVersion
 }
 
 configurations {

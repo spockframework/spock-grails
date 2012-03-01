@@ -4,8 +4,6 @@ grails.project.dependency.resolution = {
   log "warn"
 
   repositories {
-    flatDir name: 'local', dirs: '${pluginsDir}'
-
     grailsHome()
     grailsCentral()
   }
