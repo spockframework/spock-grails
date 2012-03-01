@@ -6,6 +6,7 @@ task setupTestAppGrails13(type: SetupGrailsProject, dependsOn: packagePlugin) {
   from ("$setupPlugin.destinationDir") {
     include "*.zip"
     into "lib"
+    rename "^grails-(.+)", "$\2"
   }
   props grailsVersion: grails13Version, pluginVersion: pluginVersion
 }
