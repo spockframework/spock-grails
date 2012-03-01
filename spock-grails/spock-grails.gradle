@@ -37,7 +37,8 @@ configureBaseGrailsClasspath = { grailsVersion, configuration ->
 
 pluginVersion = version
 pluginGrailsVersion = "2.0.0"
-pluginSpockVersion = "$version-groovy-1.8"
+pluginSpockGroovyVersion = "1.8"
+pluginSpockVersion = spockVersion(pluginSpockGroovyVersion)
 if (isSnapshot) {
   pluginVersion += "-SNAPSHOT"
   pluginSpockVersion += "-SNAPSHOT"
