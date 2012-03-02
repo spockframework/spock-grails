@@ -3,14 +3,14 @@ description = "Spock Framework support for Grails"
 apply plugin: "idea"
 
 allprojects { project ->
-  version = '0.6-rc-1'
+  version = '0.6'
   group = "org.spockframework"
   isSnapshot = false
   isStagingBuild = false // should we pull spock from the dependency repo?
   isCiBuild = project.hasProperty("ciBuild")
 
   spockVersion = { groovyVersion ->
-    "0.6-groovy-$groovyVersion-rc-1" + (isSnapshot ? "-SNAPSHOT" : "")
+    "0.6-groovy-$groovyVersion" + (isSnapshot ? "-SNAPSHOT" : "")
   }
 
   if (isCiBuild) {
