@@ -33,7 +33,7 @@ grails.project.dependency.resolution = {
       mavenLocal()
     }
     if (isSnapshot) {
-      mavenRepo "http://m2repo.spockframework.org/snapshots"
+      mavenRepo "http://oss.sonatype.org/content/repositories/snapshots/"
     }
   }
 

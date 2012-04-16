@@ -20,7 +20,7 @@ allprojects { project ->
   repositories {
     maven { url "http://repo.grails.org/grails/core" }
     if (isSnapshot) {
-      maven { url "http://m2repo.spockframework.org/snapshots" }
+      maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
     } else if (isStagingBuild) {
       maven { url "«staging repo here»" }
     } else {
