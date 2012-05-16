@@ -44,15 +44,44 @@ eventPackagePluginsEnd = {
 }
 
 eventDefaultStart = {
-    createUnitTest = { Map args = [:] ->
-        createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: (args.testType ?: args['suffix']), path: "test/unit", 
-          superClass: "Specification", templatePath: "templates/testing", skipPackagePrompt: args['skipPackagePrompt']
-    }
+	int majorVersion = grailsSettings.grailsVersion.substring(0,1).toInteger()
+	if(majorVersion > 1){
+	    event "StatusUpdate", ["Using Spock profile for Grails 2.x"]
+		createUnitTest = { Map args = [:] ->
+	        createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: (args.testType ?: args['suffix']), path: "test/unit", 
+	          superClass: "Specification", templatePath: "templates/testing", skipPackagePrompt: args['skipPackagePrompt']
+	    }
 
-    createIntegrationTest = { Map args = [:] ->
-        createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "IntegrationSpec", path: "test/integration",
-          superClass: "IntegrationSpec", templatePath:"templates/testing", skipPackagePrompt: args['skipPackagePrompt']
-    }
+	    createIntegrationTest = { Map args = [:] ->
+	        createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "IntegrationSpec", path: "test/integration",
+	          superClass: "IntegrationSpec", templatePath:"templates/testing", skipPackagePrompt: args['skipPackagePrompt']
+	    }
+	
+	} else {
+		event "StatusUpdate", ["Using Spock profile for Grails 1.x"]
+		createUnitTest = { Map args = [:] ->
+			def superClass
+			// map unit test superclass to Spock equivalent
+			switch(args["superClass"]) {
+				case "ControllerUnitTestCase":
+					superClass = "ControllerSpec"
+					break
+				case "TagLibUnitTestCase":
+					superClass = "TagLibSpec"
+					break
+				default:
+					superClass = "UnitSpec"
+			}
+
+			createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "Spec", path: "test/unit", 
+				superClass: superClass, templatePath: "templates/testing", skipPackagePrompt: args['skipPackagePrompt']
+		}
+		
+		createIntegrationTest = { Map args = [:] ->
+			createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "Spec", path: "test/integration", 
+				superClass: "IntegrationSpec", templatePath:"templates/testing", skipPackagePrompt: args['skipPackagePrompt']
+		}
+	}
 }
 
 // Just upgrade plugins without user input when building this plugin
