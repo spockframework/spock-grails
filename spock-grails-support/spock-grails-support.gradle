@@ -11,11 +11,11 @@ sourceSets.all {
 
 task install(type: Upload) {
   configuration = configurations.archives
-  mavenInstaller = repositories.mavenInstaller()
+  ext.mavenInstaller = repositories.mavenInstaller()
 }
 
 uploadArchives {
-  mavenDeployer = repositories.mavenDeployer {
+  ext.mavenDeployer = repositories.mavenDeployer {
     if (isSnapshot) {
       snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
         if (project.hasProperty("sonatypeOssUsername")) {
@@ -38,7 +38,7 @@ signing {
   [install.mavenInstaller, uploadArchives.mavenDeployer]*.beforeDeployment { signPom(it) }
 }
 
-project.poms = []
+ext.poms = []
 
 ["17", "18"].each { name ->
   def named = { "groovy${name}${it.capitalize()}"}
@@ -134,7 +134,7 @@ dependencies {
 
 task classes(dependsOn: tasks.withType(AbstractCompile))
 
-modifyPom = { Closure modification ->
+ext.modifyPom = { Closure modification ->
   project.poms.each {
     it.whenConfigured(modification)
   }
