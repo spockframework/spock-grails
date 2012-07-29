@@ -1,4 +1,4 @@
-def grails2Version = "2.0.0"
+def grails2Version = "2.0.4"
 
 task setupTestAppGrails2(type: SetupGrailsProject, dependsOn: packagePlugin) {
   from "test-app"
