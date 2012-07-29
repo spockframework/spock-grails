@@ -26,7 +26,8 @@ dependencies {
     compileGrails2 grailsDependency(module, grails2Version)
   }
   compileGrails2 files("log4j")
-  testGrails2 project(path: ":spock-grails-support", configuration: "groovy18Runtime")  
+  testGrails2 project(path: ":spock-grails-support", configuration: "groovy18Runtime") 
+  bootstrapGrails2 "org.codehaus.groovy:groovy-all:1.8.6"
 }
 
 tasks.withType(GrailsTask).matching { it.name.endsWith("Grails2") }.all {
