@@ -51,7 +51,7 @@ if (isSnapshot) {
 
 apply from: "gradle/plugin.gradle"
 apply from: "gradle/testWithGrails2.gradle"
-apply from: "gradle/testWithGrails13.gradle"
+// apply from: "gradle/testWithGrails13.gradle"
 
 task test(dependsOn: tasks.withType(GrailsTask).matching { it.command == "test-app" })
 task check(dependsOn: test)
