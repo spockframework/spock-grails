@@ -5,3 +5,4 @@ target
 *.ipr
 *.iws
 *.log
+*.hprof
