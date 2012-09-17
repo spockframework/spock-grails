@@ -25,6 +25,11 @@ class SetupGrailsProject extends Sync {
       project.file("$destinationDir/src/java").mkdirs()
     }
   }
+  
+  @Input
+  Map getEffectiveProps() {
+      props.collectEntries { [it.key.toString(), it.value.toString()] }
+  }
 }
 
 project.ext.SetupGrailsProject = SetupGrailsProject
@@ -46,7 +51,6 @@ ext {
 
 if (isSnapshot) {
   pluginVersion += "-SNAPSHOT"
-  pluginSpockVersion += "-SNAPSHOT"
 }
 
 apply from: "gradle/plugin.gradle"
