@@ -1,5 +1,5 @@
 configurations {
-  configureBaseGrailsClasspath(pluginGrailsVersion, pluginBootstrap)
+  configureBaseGrailsClasspath(pluginGrailsVersion, pluginBootstrap, pluginCompile)
 }
 
 dependencies {
@@ -27,10 +27,10 @@ task setupPlugin(type: SetupGrailsProject) {
 tasks.withType(GrailsTask).matching { it.name.endsWith("Plugin") }.all {
   dependsOn setupPlugin
   projectDir setupPlugin.destinationDir
-  targetDir "${setupPlugin.destinationDir}/target"
+  projectWorkDir "${buildDir}/grailsPlugin"
+  grailsVersion pluginGrailsVersion
   
   bootstrapClasspath = configurations.pluginBootstrap
-  bootstrapRuntimeClasspath = configurations.pluginBootstrap
   compileClasspath = project.files()
   runtimeClasspath = project.files()
   testClasspath = project.files()
@@ -38,6 +38,10 @@ tasks.withType(GrailsTask).matching { it.name.endsWith("Plugin") }.all {
 
 task packagePlugin(type: GrailsTask, dependsOn: setupPlugin) {
   command "package-plugin"
+}
+
+ext.pluginFileCollection = files("$setupPlugin.destinationDir/grails-spock-${pluginVersion}.zip") {
+  builtBy packagePlugin
 }
 
 task releasePlugin(type: GrailsTask, dependsOn: packagePlugin) {

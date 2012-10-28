@@ -6,7 +6,7 @@ allprojects { project ->
   version = '0.7'
   group = "org.spockframework"
   ext {
-    isSnapshot = true
+    isSnapshot = false
     isStagingBuild = false // should we pull spock from the dependency repo?
     isCiBuild = project.hasProperty("ciBuild")
     spockVersion = { groovyVersion ->
@@ -27,6 +27,7 @@ allprojects { project ->
     } else {
       mavenCentral()
     }
+    maven { url "http://repo.grails.org/grails/repo" }
   }
 }
 

@@ -1,0 +1,71 @@
+def grails22Version = "2.2.0.RC1"
+
+repositories {
+  mavenLocal()
+}
+
+task setupTestAppGrails22(type: SetupGrailsProject, dependsOn: packagePlugin) {
+  from "test-app"
+  into "$buildDir/test-app-grails-2.2"
+  from ("$setupPlugin.destinationDir") {
+    include "*.zip"
+    into "lib"
+    rename "^grails-(.+)", "\$1"
+  }
+  props grailsVersion: grails22Version, pluginVersion: pluginVersion
+}
+
+configurations {
+  compileGrails22.exclude module: 'xml-apis'
+  runtimeGrails22.extendsFrom compileGrails22
+  testGrails22.extendsFrom runtimeGrails22
+  configureBaseGrailsClasspath(grails22Version, bootstrapGrails22, compileGrails22)
+}
+
+dependencies {
+  testGrails22 project(path: ":spock-grails-support", configuration: "groovy20Runtime"), {
+    exclude module: "groovy-all"
+  }
+  compileGrails22 "org.grails.plugins:hibernate:$grails22Version",
+                  "org.grails:grails-plugin-datasource:$grails22Version",
+                  "org.grails:grails-plugin-domain-class:$grails22Version"
+
+  runtimeGrails22 "hsqldb:hsqldb:1.8.0.7"
+  
+  testGrails22 "org.grails:grails-test:$grails22Version", 
+               "org.grails:grails-plugin-tomcat:$grails22Version"
+               
+  bootstrapGrails22 "org.codehaus.groovy:groovy-all:2.0.1"
+  bootstrapGrails22 'commons-logging:commons-logging:1.1.1'
+}
+
+configurations {
+    all {
+        resolutionStrategy {
+            def cacheHours = isCiBuild ? 1 : 24
+            cacheDynamicVersionsFor 0, 'hours'
+            cacheChangingModulesFor 0, 'hours'
+        }
+    }
+}
+
+tasks.withType(GrailsTask).matching { it.name.endsWith("Grails22") }.all {
+  dependsOn setupTestAppGrails22
+  projectDir setupTestAppGrails22.destinationDir
+  projectWorkDir "${buildDir}/grails22"
+  grailsVersion grails22Version
+  
+  bootstrapClasspath = configurations.bootstrapGrails22 + pluginFileCollection
+  compileClasspath = configurations.compileGrails22
+  runtimeClasspath = configurations.runtimeGrails22
+  testClasspath = configurations.testGrails22 
+  
+  jvmOptions {
+    systemProperty "grails.full.stacktrace", "true"
+  }
+}
+
+task testGrails22(type: GrailsTask) {
+  command "test-app"
+  args "--stacktrace --non-interactive"
+}

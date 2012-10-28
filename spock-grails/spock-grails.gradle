@@ -4,11 +4,8 @@ apply plugin: "base"
 
 buildscript {
   repositories { maven { url "http://repo.grails.org/grails/core" } }
-  dependencies.classpath "org.grails:grails-gradle-plugin:1.1.1-SNAPSHOT"
+  dependencies.classpath "org.grails:grails-gradle-plugin:2.0.0-SNAPSHOT"
 }
-
-System.setProperty("spock.building", "true")
-System.setProperty("grails.full.stacktrace", "true")
 
 class SetupGrailsProject extends Sync {
   Map props = [:]
@@ -37,8 +34,10 @@ project.ext.GrailsTask = GrailsTask
 
 ext {
   grailsDependency = { module, grailsVersion -> "org.grails:grails-$module:$grailsVersion" }
-  configureBaseGrailsClasspath = { grailsVersion, configuration ->
-    GrailsDependenciesUtil.configureBootstrapClasspath(project, grailsVersion, configuration)
+  configureBaseGrailsClasspath = { grailsVersion, bootstrapConfiguration, compileConfiguration ->
+    def grailsDependenciesConfigurer = new GrailsDependenciesConfigurer(project, grailsVersion)
+    grailsDependenciesConfigurer.configureBootstrapClasspath(bootstrapConfiguration)
+    grailsDependenciesConfigurer.configureCompileClasspath(compileConfiguration)
   }
 }
 
@@ -54,10 +53,16 @@ if (isSnapshot) {
 }
 
 apply from: "gradle/plugin.gradle"
-apply from: "gradle/testWithGrails2.gradle"
-// apply from: "gradle/testWithGrails13.gradle"
+apply from: "gradle/testWithGrails20.gradle"
+apply from: "gradle/testWithGrails22.gradle"
 
 task test(dependsOn: tasks.withType(GrailsTask).matching { it.command == "test-app" })
 task check(dependsOn: test)
 task assemble(dependsOn: packagePlugin, overwrite: true)
 task build(dependsOn: [check, assemble])
+
+tasks.withType(GrailsTask) {
+  jvmOptions {
+    systemProperty "spock.building", "true"
+  }
+}

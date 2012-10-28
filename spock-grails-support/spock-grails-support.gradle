@@ -40,7 +40,7 @@ signing {
 
 ext.poms = []
 
-["18"].each { name ->
+["18", "20"].each { name ->
   def named = { "groovy${name}${it.capitalize()}"}
   def thisSpockVersion = spockVersion("${name[0]}.${name[1]}")
 
@@ -114,23 +114,29 @@ ext.poms = []
   }
 }
 
+repositories {
+  mavenLocal()
+}
+
 dependencies {
   groovy18Groovy "org.codehaus.groovy:groovy-all:1.8.6"
-  groovy18Compile "org.spockframework:spock-core:${spockVersion("1.8")}"
+  groovy18Compile "org.spockframework:spock-core:${spockVersion("1.8")}", {
+    exclude module: "groovy-all"
+  }
   groovy18Compile "org.slf4j:slf4j-log4j12:1.6.0"
   ["test", "plugin-testing"].each { module ->
     groovy18Compile("org.grails:grails-$module:2.0.0")
   }
 
-/*  groovy17Groovy "org.codehaus.groovy:groovy-all:1.7.10"
-  groovy17Compile "org.spockframework:spock-core:${spockVersion("1.7")}"
-  groovy17Compile "org.apache.ant:ant-junit:1.7.1"
-  groovy17Compile "org.apache.tomcat:servlet-api:6.0.29"
-  groovy17Compile "org.slf4j:slf4j-log4j12:1.5.5"
-  ["core", "test", "web"].each { module ->
-    groovy17Compile("org.grails:grails-$module:1.3.7")
+  groovy20Groovy "org.codehaus.groovy:groovy-all:2.0.5"
+  groovy20Compile "org.spockframework:spock-core:${spockVersion("2.0")}", {
+    exclude module: "groovy-all"
   }
-*/}
+  groovy20Compile "org.slf4j:slf4j-log4j12:1.6.0"
+  ["test", "plugin-testing", "web", "core"].each { module ->
+    groovy20Compile("org.grails:grails-$module:2.2.0.RC1")
+  }
+}
 
 task classes(dependsOn: tasks.withType(AbstractCompile))
 
@@ -176,4 +182,6 @@ modifyPom {
   }
 
   it.dependencies.removeAll(it.dependencies.findAll { it.groupId != "org.spockframework" })
+  def exclusionClass = it.dependencies[0].class.classLoader.loadClass("org.apache.maven.model.Exclusion")
+  it.dependencies[0].exclusions = [exclusionClass.newInstance(artifactId: "groovy-all", groupId: "org.codehaus.groovy")]
 }

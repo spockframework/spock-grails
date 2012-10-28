@@ -1,0 +1,57 @@
+def grails20Version = "2.0.0"
+
+task setupTestAppGrails20(type: SetupGrailsProject, dependsOn: packagePlugin) {
+  from "test-app"
+  into "$buildDir/test-app-grails-20"
+  from ("$setupPlugin.destinationDir") {
+    include "*.zip"
+    into "lib"
+    rename "^grails-(.+)", "\$1"
+  }
+  props grailsVersion: grails20Version, pluginVersion: pluginVersion
+}
+
+configurations {
+  compileGrails20 {
+    exclude module: 'xml-apis'
+    exclude module: 'slf4j-log4j12'
+  }
+  runtimeGrails20.extendsFrom compileGrails20
+  testGrails20.extendsFrom runtimeGrails20
+  configureBaseGrailsClasspath(grails20Version, bootstrapGrails20, compileGrails20)
+}
+
+dependencies {
+  ["plugin-tomcat", "plugin-datasource", "plugin-services", "hibernate"].each { module ->
+    compileGrails20 grailsDependency(module, grails20Version)
+  }
+  compileGrails20 files("log4j")
+  testGrails20 project(path: ":spock-grails-support", configuration: "groovy18Runtime"), {
+    exclude module: "groovy-all"
+  }
+}
+
+tasks.withType(GrailsTask).matching { it.name.endsWith("Grails20") }.all {
+  dependsOn setupTestAppGrails20
+  projectDir setupTestAppGrails20.destinationDir
+  projectWorkDir "${buildDir}/grails20"
+  grailsVersion grails20Version
+  
+  bootstrapClasspath = configurations.bootstrapGrails20
+  compileClasspath = configurations.compileGrails20
+  runtimeClasspath = configurations.runtimeGrails20
+  testClasspath = configurations.testGrails20
+}
+
+task installPluginGrails20(type: GrailsTask) {
+  command "install-plugin"
+  args "$setupPlugin.destinationDir/grails-spock-${pluginVersion}.zip"
+  doFirst { 
+    delete "~/.grails/ivy-cache/org.spockframework" 
+    delete "~/.grails/2.0.0/cached-installed-plugins/spock-${version}.zip"
+  }
+}
+
+task testGrails20(type: GrailsTask, dependsOn: installPluginGrails20) {
+  command "test-app"
+}
