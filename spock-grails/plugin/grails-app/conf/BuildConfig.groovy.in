@@ -20,7 +20,6 @@ grails.project.dependency.resolution = {
   def isSnapshot = spockVersion.endsWith("-SNAPSHOT")
   
   def isSpockBuild = System.getProperty("spock.building") != null
-  def isSpockRelease = System.getProperty("spock.releasing") != null
 
   inherits "global" // inherit Grails' default dependencies
   log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
