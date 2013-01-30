@@ -48,11 +48,11 @@ eventDefaultStart = {
   if (majorVersion > 1) {
     createUnitTest = { Map args = [:] ->
       createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: (args.testType ?: args['suffix']), path: "test/unit",
-          superClass: "Specification", templatePath: "templates/testing", skipPackagePrompt: args['skipPackagePrompt']
+          superClass: "Specification", templatePath: "templates/artifacts", skipPackagePrompt: args['skipPackagePrompt']
     }
     createIntegrationTest = { Map args = [:] ->
       createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "IntegrationSpec", path: "test/integration",
-          superClass: "IntegrationSpec", templatePath: "templates/testing", skipPackagePrompt: args['skipPackagePrompt']
+          superClass: "IntegrationSpec", templatePath: "templates/artifacts", skipPackagePrompt: args['skipPackagePrompt']
     }
   } else {
     createUnitTest = { Map args = [:] ->
@@ -70,12 +70,12 @@ eventDefaultStart = {
       }
 
       createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "Spec", path: "test/unit",
-          superClass: superClass, templatePath: "templates/testing", skipPackagePrompt: args['skipPackagePrompt']
+          superClass: superClass, templatePath: "templates/artifacts", skipPackagePrompt: args['skipPackagePrompt']
     }
 
     createIntegrationTest = { Map args = [:] ->
       createArtifact name: args["name"], suffix: "${args['suffix']}Spec", type: "Spec", path: "test/integration",
-          superClass: "IntegrationSpec", templatePath: "templates/testing", skipPackagePrompt: args['skipPackagePrompt']
+          superClass: "IntegrationSpec", templatePath: "templates/artifacts", skipPackagePrompt: args['skipPackagePrompt']
     }
   }
 }
