@@ -28,6 +28,10 @@ class SpockGrailsPlugin {
   def author = "Spock Framework"
   def authorEmail = "user@forum.spockframework.org"
   def title = "Spock Plugin - spockframework.org"
-  def description = 'Test your Grails apps with Spock'
+  def description = 'Test your Grails apps using the [Spock Framework|http://spockframework.org]'
   def documentation = 'http://grails.org/plugin/spock'
+
+  def license = "APACHE"
+  def issueManagement = [system: "JIRA", url: "http://jira.grails.org/browse/GPSPOCK"]
+  def scm = [url: "https://github.com/spockframework/spock-grails"]
 }
