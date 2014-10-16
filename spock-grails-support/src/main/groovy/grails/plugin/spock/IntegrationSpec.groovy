@@ -16,7 +16,7 @@
 
 package grails.plugin.spock
 
-import org.codehaus.groovy.grails.commons.ApplicationHolder
+import grails.util.Holders
 import org.codehaus.groovy.grails.test.support.GrailsTestAutowirer
 import org.codehaus.groovy.grails.test.support.GrailsTestTransactionInterceptor
 import org.codehaus.groovy.grails.test.support.GrailsTestRequestEnvironmentInterceptor
@@ -29,7 +29,7 @@ import spock.lang.Shared
 import spock.lang.Stepwise
 
 class IntegrationSpec extends Specification {
-  @Shared private applicationContext = ApplicationHolder.application.mainContext
+  @Shared private applicationContext = Holders.applicationContext
   @Shared private autowirer = new GrailsTestAutowirer(applicationContext)
   
   @Shared private perSpecTransactionInterceptor
